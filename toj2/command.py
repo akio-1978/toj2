@@ -37,8 +37,9 @@ class Command():
             引数templateとsourceは必須のため、サブコマンドではsuper呼出しするのが好ましい
         """
         self.parser.add_argument('template', help='使用するjinja2テンプレート.')
-        self.parser.add_argument('source', help='レンダリング対象ファイル 省略時はstdin.',
-                            nargs='?', default=sys.stdin)
+        # 入出力ファイル名は省略不可にしたので位置引数とする
+        self.parser.add_argument('source', help='レンダリング対象ファイル',)
+        self.parser.add_argument('out', help='出力先ファイル',)
 
     def add_optional_arguments(self):
         """サブコマンドでオプションを追加する場合にこのメソッドをオーバーライドする"""
@@ -49,8 +50,6 @@ class Command():
             全てのサブコマンドで共通して使うオプションを想定しているので
             オーバーライドは不要
         """
-        self.parser.add_argument('-o', '--out', metavar='file',
-                            help='出力先ファイル 省略時はstdout.', default=sys.stdout)
         # source encoding
         self.parser.add_argument('--input-encoding', metavar='enc',
                             help='入力時の文字エンコーディング.', default='utf-8')

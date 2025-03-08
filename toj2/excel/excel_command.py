@@ -24,9 +24,7 @@ class ExcelCommand(Command):
             * 読み取り対象シートの指定は必須
             * 読み取りセル範囲の指定は必須
         """
-        self.parser.add_argument('template', help='使用するjinja2テンプレート.')
-        # source book can't read from stdin
-        self.parser.add_argument('source', help='レンダリング対象ブック xlsxファイルのみ対象.')
+        super().add_positional_arguments()
         self.parser.add_argument('sheets', help=ExcelCommand.HELP_SHEETS, action=SheetRangeAction)
         self.parser.add_argument('read_range', help=ExcelCommand.HELP_READ_RANGE, action=CellRangeAction)
 

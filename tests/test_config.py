@@ -13,7 +13,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/use_column_names.tmpl', 'tests/csv/src/simple_tab.tsv', 
-            '-o', result_file, '--header', '--config-file', 'tests/csv/config/delimiter.json']).execute()
+            result_file, '--header', '--config-file', 'tests/csv/config/delimiter.json']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_skip_lines(self):
@@ -21,7 +21,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/use_column_names.tmpl', 'tests/csv/src/simple.csv', 
-            '-o', result_file, '--names', 'group', 'number', 'name', '--config-file', 'tests/csv/config/skip_lines.json']).execute()
+            result_file, '--names', 'group', 'number', 'name', '--config-file', 'tests/csv/config/skip_lines.json']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_names(self):
@@ -29,7 +29,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/use_column_names.tmpl', 'tests/csv/src/simple.csv', 
-            '-o', result_file, '-s', '1', '--config-file', 'tests/csv/config/names.json']).execute()
+            result_file, '-s', '1', '--config-file', 'tests/csv/config/names.json']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_overwrite_names(self):
@@ -37,7 +37,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/use_column_names.tmpl', 'tests/csv/src/simple.csv', 
-            '-o', result_file, '-s', '1', '--names', 'group', 'number', 'name', '--config-file', 'tests/csv/config/overwrite.names.json']).execute()
+            result_file, '-s', '1', '--names', 'group', 'number', 'name', '--config-file', 'tests/csv/config/overwrite.names.json']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_merge_parameter(self):
@@ -45,7 +45,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'merge_parameters.yml')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/merge_parameters.tmpl', 'tests/csv/src/parameters.csv', 
-            '-o', result_file, '-H',
+            result_file, '-H',
             '--parameters', 'list_name=Yurakucho-line-stations-in-ward', '--config-file', 'tests/csv/config/parameters.json', ]).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
@@ -54,7 +54,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'overwrite_parameters.yml')
         result_file = self.result_file()
         Runner(args=['csv', 'tests/csv/templates/merge_parameters.tmpl', 'tests/csv/src/parameters.csv', 
-            '-o', result_file, '-H',
+            result_file, '-H',
             '--parameters', 'value2=overwrite', 'list_name=Yurakucho-line-stations-in-ward', '--config-file', 'tests/csv/config/parameters.json', ]).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
@@ -63,7 +63,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.EXCEL, 'read_document.txt')
         result_file = self.result_file()
         Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
-            '1:', 'C7:H10', '-o', result_file, '--config-file', 'tests/excel/config/absolute.json',]).execute()
+            result_file, '1:', 'C7:H10', '--config-file', 'tests/excel/config/absolute.json',]).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_excel_merge_absolute(self):
@@ -71,7 +71,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.EXCEL, 'read_document.txt')
         result_file = self.result_file()
         Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
-            '1:', 'C7:H10', '-o', result_file, '--absolute', 'DESCRIPTION=C4',
+            result_file, '1:', 'C7:H10', '--absolute', 'DESCRIPTION=C4',
             '--config-file', 'tests/excel/config/merge_absolute.json',]).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
@@ -81,7 +81,7 @@ class ConfigTest(J2SRenderingTest):
         expect_file = self.expect_path(J2SRenderingTest.EXCEL, 'read_document.txt')
         result_file = self.result_file()
         Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
-            '1:', 'C7:H10', '-o', result_file, '--absolute', 'NAME=C3', 'DESCRIPTION=C4',
+            result_file, '1:', 'C7:H10', '--absolute', 'NAME=C3', 'DESCRIPTION=C4',
             '--config-file', 'tests/excel/config/overwrite_absolute.json',]).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
