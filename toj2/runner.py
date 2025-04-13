@@ -13,7 +13,7 @@ class Runner():
 
     def __init__(self, *, args:list):
         self.args = args
-        self.commands = {
+        self.PARSER_CMD = {
             'csv' : CsvCommand,
             'excel' : ExcelCommand,
             'json' : JsonCommand,
@@ -33,23 +33,27 @@ class Runner():
         ctx_parser = CustomHelpParser(prog=toj2.PROG_NAME)
         ctx_parser.add_argument('cmd', choices=['csv', 'excel', 'json'], default='')
         ctx_parser.add_argument('--config-file', default=None)
-        ns, unknown = ctx_parser.parse_known_args(args)
+        parsed, unknown = ctx_parser.parse_known_args(args)
 
         # コマンドからコンテキストの取得
-        ctx = AppContext()
-        if ns.config_file:
+        context = AppContext()
+        if parsed.config_file:
             # 設定ファイルが存在すればコンテキストに書き込む
-            self.load_config(ctx=ctx, filename=ns.config_file)
-        return self.commands[ns.cmd], ctx
+            self.load_config(context=context, filename=parsed.config_file)
+        return self.PARSER_CMD[parsed.cmd], context
 
-    def load_config(self,*, ctx, filename):
+    def load_config(self,*, context, filename):
         """ 設定ファイルの内容をcontextにsetattrする"""
         with open(filename) as src:
             config = json.load(src)
             # 設定ファイルの中身を順次argsに反映する
             for key, value in config.items():
-                setattr(ctx, key, value)
-        return ctx
+                setattr(context, key, value)
+        return context
+
+    def get_parse_command(self, *, command_type:str):
+        """ Commandクラスの取得 """
+        return self.PARSER_CMD[command_type]
 
 class CustomHelpParser(argparse.ArgumentParser):
     
