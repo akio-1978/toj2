@@ -7,38 +7,38 @@ class ConsoleTest(J2SRenderingTest):
 
     def test_no_subcommand(self):
         """サブコマンドの指定がない"""
-        starter = Runner(args=[])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=[]).execute()
 
-    def test_csv_invalid(self):
+    def test_csv_no_arg(self):
         """csv 引数指定がない"""
-        starter = Runner(args=['csv'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['csv']).execute()
 
-    def test_excel_invalid(self):
+    def test_excel_no_arg(self):
         """excel 引数指定がない"""
-        starter = Runner(args=['excel'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['excel']).execute()
 
-    def test_json_invalid(self):
+    def test_json_no_arg(self):
         """json 引数指定がない"""
-        starter = Runner(args=['json'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['json']).execute()
 
     def test_csv_help(self):
         """csv ヘルプ表示"""
-        starter = Runner(args=['csv', '-h'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['csv', '-h']).execute()
 
     def test_excel_help(self):
         """excel ヘルプ表示"""
-        starter = Runner(args=['excel', '-h'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['excel', '-h']).execute()
 
     def test_json_help(self):
         """json ヘルプ表示"""
-        starter = Runner(args=['json', '-h'])
-        self.assertRaises(BaseException, starter.execute)
+        with self.assertRaises(SystemExit):
+            Runner(args=['json', '-h']).execute()
 
 if __name__ == '__main__':
     unittest.main()
