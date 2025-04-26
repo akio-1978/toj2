@@ -29,7 +29,7 @@ jinja2とopenpyxlを使用しています。
 コマンドとして実行します。例えば以下のような形になります。
 
 ```sh
-toj2 csv demo.tmpl demo.csv
+toj2 csv demo.tmpl demo.csv test.out
 ```
 
 ## 共通コマンド引数
@@ -41,7 +41,7 @@ toj2 csv demo.tmpl demo.csv
 位置引数だけ指定してtoj2を実行すると以下のようなイメージになります。[^out-option]
 
 ```sh
-toj2 csv demo.tmpl demo.csv
+toj2 csv demo.tmpl demo.csv test.out
 ```
 
 #### 処理データ種別
@@ -57,15 +57,15 @@ toj2 csv demo.tmpl demo.csv
 **jinja2のFileSystemLoaderにはこのファイルが配置されたディレクトリが指定されます。** ここを基準に他のテンプレートのinclude等が行えます。
 
 #### 変換対象ファイル
-変換元として読み込むファイルを指定します。省略した場合、`sys.stdin`からの読込みになります。
+指定必須です。変換元として読み込むファイルを指定します。
+*バージョン 0.2.3 より全てのファイル形式で入出力ファイル指定が必須化されました。*
+
+#### --out 出力ファイル
+指定必須です。変換結果を出力するファイルを指定します。
+*バージョン 0.2.3 より全てのファイル形式で入出力ファイル指定が必須化されました。*
 
 ### オプション引数
 すべてのデータ形式で設定可能なオプション引数です。
-
-#### --out 出力ファイル
-`-o output_file` または `--out output_file`
-
-変換結果を出力するファイルを指定します。省略された場合、`sys.stdout`に出力されます。
 
 #### --input-encoding --output-encoding 文字列エンコーディング
 
@@ -87,7 +87,7 @@ jinja2テンプレートに任意の値を渡すことができます。値は`=
 以下のようなコマンドが少し長いと感じるでしょう（以下はcsv変換用のオプションを含みます）。
 
 ```sh
-toj2 csv sample.tmpl sample.csv --skip-lines 1 --out result.txt  --names one two three four --parameters PARAM1=A PARAM2=B PARAM3=C
+toj2 csv sample.tmpl sample.csv test.out --skip-lines 1 --names one two three four --parameters PARAM1=A PARAM2=B PARAM3=C
 ```
 
 このオプションを以下のような`config.json`としてまとめて記述します。設定ファイル内ではオプション名の先頭のふたつのハイフンは除去し、途中に現れるハイフンはアンダースコアに置き換えます。
@@ -106,12 +106,12 @@ toj2 csv sample.tmpl sample.csv --skip-lines 1 --out result.txt  --names one two
 
 そして、コマンドを以下のように実行すると、`config.json`の内容がオプションとして使用されます。
 ```sh
-toj2 csv sample.tmpl sample.csv --config-file config.json
+toj2 csv sample.tmpl sample.csv test.out --config-file config.json
 ```
 
 これだけではなく、**設定ファイルはコマンドラインからオーバーライドすることができます。**
 ```sh
-toj2 csv sample.tmpl sample.csv --config-file config.json --skip-lines 0 --parameters PARAM1=X PARAM4=D
+toj2 csv sample.tmpl sample.csv test.out --config-file config.json --skip-lines 0 --parameters PARAM1=X PARAM4=D
 ```
 設定ファイル中の`skip-lines`は`1`ですが、ここでは`0`に置き換わります。
 
@@ -121,7 +121,7 @@ toj2 csv sample.tmpl sample.csv --config-file config.json --skip-lines 0 --param
 JSONの処理については特に固有のオプションはなく、共通オプションのみが使用できます。
 
 ```sh
-toj2 json jsontemplate.tmpl data.json
+toj2 json jsontemplate.tmpl data.json test.out
 ```
 
 #### jinja2への出力形式

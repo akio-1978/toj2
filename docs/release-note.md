@@ -1,6 +1,12 @@
-# j2shine release note
+# toj2 release note
 
 ## version 0.2.x
+
+## version 0.2.3 
+2025/04/27リリース
+* `stdin`からの入力と`stdout`への出力を廃止。全てファイルを経由する。
+* サブコマンドの後に入力がなかった場合、`see --help for usage`の出力を追加。
+  * ただし、`argparse`がどうしても余分な出力を出す際はそのままにした。
 
 ### 0.2.2
 * issue 1 csvでクラッシュする問題の修正
