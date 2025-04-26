@@ -8,7 +8,8 @@ import toj2
 
 class JsonCommand(Command):
     def __init__(self):
-        self.parser = argparse.ArgumentParser(prog=f'{toj2.PROG_NAME} json mode')
+        self.parser = argparse.ArgumentParser(prog=f'{toj2.PROG_NAME} json mode',
+                                              usage=toj2.SEE_HELP)
         self.setup()
 
     def get_loader(self, context):
