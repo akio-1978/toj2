@@ -21,16 +21,19 @@ class Runner():
 
     def execute(self):
         """プログラム実行"""
-        # 実行するcommandの決定と設定ファイルがあれば読み取り
-        command, context = self.get_context(args=self.args)
+        # ファイル形式に対応した実際のコマンドを取得する
+        # contextには設定ファイルの中身が書き込まれている
+        command, context = self.build_cmd(args=self.args)
 
-        # コマンドライン引数をパースする。contextに直接書きこむ。
-        command().execute(args=self.args, context=context)
+        # ファイル形式に対応した実際のコマンドを実行する
+        # コマンドライン入力は内部で再度parseされ、結果はcontextに書き込まれる
+        # ※contextはImmutableではない
+        command.execute(args=self.args, context=context)
 
-    def get_context(self, *, args:list):
+    def build_cmd(self, *, args:list):
         """引数を一部だけパースしてcontextとcommandを取得する"""
         # サブコマンドと設定ファイルだけを取得する、サブコマンドが対象外の場合ここで終了する
-        ctx_parser = CustomHelpParser(prog=toj2.PROG_NAME)
+        ctx_parser = CustomHelpParser(prog=toj2.PROG_NAME, add_help=False)
         ctx_parser.add_argument('cmd', choices=['csv', 'excel', 'json'], default='')
         ctx_parser.add_argument('--config-file', default=None)
         parsed, unknown = ctx_parser.parse_known_args(args)
@@ -39,10 +42,10 @@ class Runner():
         context = AppContext()
         if parsed.config_file:
             # 設定ファイルが存在すればコンテキストに書き込む
-            self.load_config(context=context, filename=parsed.config_file)
-        return self.PARSER_CMD[parsed.cmd], context
+            self.load_config_file(context=context, filename=parsed.config_file)
+        return self.get_cmd_instance(cmd_type=parsed.cmd), context
 
-    def load_config(self,*, context, filename):
+    def load_config_file(self,*, context, filename):
         """ 設定ファイルの内容をcontextにsetattrする"""
         with open(filename) as src:
             config = json.load(src)
@@ -51,9 +54,9 @@ class Runner():
                 setattr(context, key, value)
         return context
 
-    def get_parse_command(self, *, command_type:str):
-        """ Commandクラスの取得 """
-        return self.PARSER_CMD[command_type]
+    def get_cmd_instance(self, *, cmd_type:str):
+        """ Commandクラスインスタンスの取得 """
+        return self.PARSER_CMD[cmd_type]()
 
 class CustomHelpParser(argparse.ArgumentParser):
     
