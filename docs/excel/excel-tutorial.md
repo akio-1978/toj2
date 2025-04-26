@@ -59,7 +59,7 @@ toj2は範囲指定したセルのみを読込みます。Excelと同じく`C7:F
 指定範囲外のセルを取得する場合、`--absolute`オプションでセル座標とjinja2内で参照するための名前を指定します。
 
 ```sh
-toj2 excel exceldemo.tmpl class-students.xlsx 1:3 C7:F  -o result.html --absolute teacher=C3 memo=C4
+toj2 excel exceldemo.tmpl class-students.xlsx result.html 1:3 C7:F --absolute teacher=C3 memo=C4
 ```
 #### 実行結果
 結果のHTMLが生成されます。
@@ -234,13 +234,15 @@ toj2全体のコマンド引数については[共通の引数](../README.md#共
 Excel変換ではこれら全てが必須の位置引数として扱われます。
 
 ```sh
-toj2 excel excel.tmpl book.xlsx 1:3 A1:D4
+toj2 excel excel.tmpl book.xlsx test.out 1:3 A1:D4
 ```
 
 #### 読込みファイル
 `book.xlsx`の部分です。
 
-Excel変換では`sys.stdin`からの読込みに対応しないため、読込みファイルの指定は必須です。
+#### 書き込みファイル
+`test.out`の部分です。
+*バージョン 0.2.3 より全てのファイル形式で入出力ファイル指定が必須化されました。*
 
 #### **シート範囲**
 `1:3`の部分です。
@@ -264,9 +266,9 @@ toj2 excel excel.tmpl book.xlsx 1: A1:D4
 
 ```
 # A1からD4の範囲を読込む 引数 A1:D4
-toj2 excel excel.tmpl book.xlsx 1 A1:D4
+toj2 excel excel.tmpl book.xlsx test.out 1 A1:D4
 # A1を起点として、存在する全ての行をD列まで読込む 引数 A1:D
-toj2 excel excel.tmpl book.xlsx 1 A1:D
+toj2 excel excel.tmpl book.xlsx test.out 1 A1:D
 ```
 
 toj2はシート内のセル範囲ひとつのみを取得できます。`A1:D4`と`H2:J16`を同時に取得するような操作はできません。
@@ -282,7 +284,7 @@ toj2全体のコマンド引数については[共通の引数](../README.md#共
 
 ```sh
 # 左から順に名前を付ける
-toj2 excel excel.tmpl book.xlsx 1 A1:D4  --names name age job
+toj2 excel excel.tmpl book.xlsx test.out 1 A1:D4  --names name age job
 ```
 同じ名前が二回以上指定された場合、読み込まれる値は最後に読み込まれたものが使用されます。
 
@@ -291,7 +293,7 @@ toj2 excel excel.tmpl book.xlsx 1 A1:D4  --names name age job
 取得した内容は各`sheet.abs`に格納されます。このファイル冒頭のデモで実際に使用しています。`--absolute`オプションは複数並べて指定することができます。
 ```sh
 # セルA1をvalue1という名前で、A2をvalue2という名前で取得する
-toj2 excel excel.tmpl book.xlsx 1 A3:D6 --absolute value1=A1 value2=A2
+toj2 excel excel.tmpl book.xlsx test.out 1 A3:D6 --absolute value1=A1 value2=A2
 ```
 
 [トップへ](../README.md)

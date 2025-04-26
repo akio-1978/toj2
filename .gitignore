@@ -9,3 +9,5 @@ dist
 
 /tests/output/**/*.tmp
 .VSCodeCounter
+
+**/sample/result**

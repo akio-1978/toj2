@@ -56,12 +56,12 @@ CSVファイルの第一カラムには出席番号が含まれていますが�
 toj2コマンドを実行します。ここで外部パラメータとして担任の先生の名前を入れてあげます。
 
 ```sh
-toj2 csv demo.tmpl demo.csv --out result.html --parameters teacher=A.Sawada
+toj2 csv demo.tmpl demo.csv result.html --parameters teacher=A.Sawada
 ```
 #### 実行結果
 結果のHTMLが生成されます。csvファイルの中身と、コマンドから渡した外部パラメータがそれぞれ参照されています。
 
-```html
+```html:result.html
 <html>
 <head> 
     <title>部活別生徒一覧</title>
@@ -130,7 +130,7 @@ csvファイルに対してはオプション引数しか存在しないため�
 
 ```sh
 # タブ区切りファイルの処理
-toj2 csv test.tmpl test.csv --delimiter "\t"
+toj2 csv test.tmpl test.csv test.out --delimiter "\t"
 ```
 
 #### --header ヘッダの使用
@@ -139,7 +139,7 @@ toj2 csv test.tmpl test.csv --delimiter "\t"
 
 ```sh
 # ヘッダ使用
-toj2 csv test.tmpl test.csv --header
+toj2 csv test.tmpl test.csv test.out --header
 ```
 
 #### --slip-lines 行のスキップ
@@ -148,14 +148,14 @@ toj2 csv test.tmpl test.csv --header
 
 ```sh
 # ヘッダをスキップ
-toj2 csv test.tmpl test.csv --skip-lins 1
+toj2 csv test.tmpl test.csv  test.out --skip-lins 1
 ```
 
 `--header`オプションと`--skip-lins`オプションが両方指定された場合、`--skip-lins`で読み飛ばした直後の行をヘッダとして扱います。 
 
 ```sh
 # 2行目がヘッダになる
-toj2 csv test.tmpl test.csv --skip-lins 1 --header
+toj2 csv test.tmpl test.csv test.out --skip-lins 1 --header
 ```
 
 #### --names カラムに名前を付ける
@@ -165,7 +165,7 @@ toj2 csv test.tmpl test.csv --skip-lins 1 --header
 
 ```sh
 # 左から順に、使用しない項目であっても名前を付ける
-toj2 csv test.tmpl test.csv --names name age job
+toj2 csv test.tmpl test.csv test.out --names name age job
 ```
 同じ名前が二回以上指定された場合、読み込まれる値は最後に読み込まれたものが使用されます。
 `--header`オプションと`--names`オプションが両方指定された場合、`--header`が優先されます。
@@ -203,7 +203,7 @@ toj2 csv test.tmpl test.csv --names name age job
 ```
 コマンドにオプションを追加します
 ```sh
-toj2 csv namesdemo.tmpl demo.csv --out namesresult.html --names no name club_name --parameters teacher=A.Sawada
+toj2 csv namesdemo.tmpl demo.csv namesresult.html --names no name club_name --parameters teacher=A.Sawada
 ```
 </details>
 
