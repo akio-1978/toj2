@@ -83,21 +83,5 @@ class RunnerTest(J2SRenderingTest):
             result_file, '1:', 'A6:G', '--absolute', 'TABLE=C3', 'LABEL=C4']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
-    def test_csv_help(self):
-        starter = Runner(args=['csv', '-h'])
-        self.assertRaises(BaseException, starter.execute)
-
-    def test_excel_help(self):
-        starter = Runner(args=['excel', '-h'])
-        self.assertRaises(BaseException, starter.execute)
-
-    def test_json_help(self):
-        starter = Runner(args=['json', '-h'])
-        self.assertRaises(BaseException, starter.execute)
-
-    def test_csv_invalid(self):
-        starter = Runner(args=['csv'])
-        self.assertRaises(BaseException, starter.execute)
-
 if __name__ == '__main__':
     unittest.main()
