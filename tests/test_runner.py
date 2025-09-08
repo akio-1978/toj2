@@ -83,5 +83,12 @@ class RunnerTest(J2SRenderingTest):
             result_file, '1:', 'A6:G', '--absolute', 'TABLE=C3', 'LABEL=C4']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
+    def test_split_sheets_loss_suffix(self):
+        """--split_sheetsの引数不正"""
+        result_file = self.result_file()
+        with self.assertRaises(BaseException):
+            Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
+                result_file, '1:', 'C7:H10', '--split-suffix', '--absolute', 'NAME=C3', 'DESCRIPTION=C4']).execute()
+
 if __name__ == '__main__':
     unittest.main()

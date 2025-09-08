@@ -1,0 +1,18 @@
+sheet: {{current.sheet.name}}
+absolute: {{current.sheet.absolute}}
+
+current-cells =====
+{% for rows in current.sheet.rows %}
+:{{rows.col_00}}:{{rows.col_01}}:{{rows.col_02}}
+{%- endfor -%}
+
+all-sheets =====
+{%- for sheet in sheets %}
+sheet: {{sheet.name}}
+absolute: {{sheet.absolute}}
+
+all-cells =====
+{% for rows in sheet.rows %}
+-{{rows.col_00}}-{{rows.col_01}}-{{rows.col_02}}
+{%- endfor %}
+{%- endfor %}

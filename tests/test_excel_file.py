@@ -2,11 +2,12 @@ import unittest
 from toj2.context import AppContext
 from toj2.excel.excelutils import parse_read_range, parse_sheet_args
 from toj2.excel.excel_loader import ExcelLoader
+from toj2.excel.excel_processor import ExcelProsessor
 from toj2.processors import Jinja2Processor
 
 from tests.testutils import J2SRenderingTest
 
-class ExcelTest(J2SRenderingTest):
+class ExcelFileTest(J2SRenderingTest):
 
     def result_dir(self):
         """出力ディレクトリ名を返す"""
@@ -198,14 +199,50 @@ class ExcelTest(J2SRenderingTest):
                                  expect='tests/excel/expect/cols_over.txt',
                                  source='tests/excel/src/cols.xlsx')
 
+    def test_split(self):
+        """シートごとに1ファイルで出力"""
+        context = self.default_context()
+        context.template = 'tests/excel/templates/split.tmpl'
+        context.read_range = parse_read_range(range_str='A1:C4')
+        context.sheets = parse_sheet_args(sheets_range_str='1:3')
+        context.absolute = {'abs':'E1'}
+        context.split_suffix = "_split.txt"
+        self.excel_split_test(context=context,
+                                 expect=['tests/excel/expect/000_Sheet01_split.txt',
+                                         'tests/excel/expect/001_Sheet02_split.txt',
+                                         'tests/excel/expect/002_Sheet03_split.txt',] ,
+                                 
+                                 output=['tests/output/excel/000_Sheet01_split.txt',
+                                         'tests/output/excel/001_Sheet02_split.txt',
+                                         'tests/output/excel/002_Sheet03_split.txt',] ,
+                                 
+                                 source='tests/excel/src/split.xlsx')
 
-    def excel_rendering_test(self, *, context, expect, source, encoding='utf8'):
-        result_file = self.result_file()
+    def excel_rendering_test(self, *, context, expect, source):
+        """テスト用ユーティリティメソッド 出力してファイル比較する(splitなしの場合)"""
+        self.execute_processor(context=context, expect=expect, source=source)
+        self.file_test(expect_file=expect, result_file=context.out, delete_on_success=False)
+
+    def excel_split_test(self, *, context, expect: list, output: list, source: str, processor=None):
+        """テスト用ユーティリティメソッド 出力部分 split版"""
+        if processor is None:
+            processor = ExcelProsessor(context=context)
+        
+        context.source = source
+        context.out = 'tests/output/excel'
+        loader = ExcelLoader(context=context, processor=processor)
+        loader.execute()
+        # 1ファイルずつ比較テスト
+        for e, o in zip(e, o):
+            self.file_test(expect_file=e, result_file=o, delete_on_success=False)
+
+
+    def execute_processor(self, *, context, expect, source):
+        """テスト用ユーティリティメソッド 出力部分"""
         context.source = source
         context.out = self.result_file()
         loader = ExcelLoader(context=context, processor=Jinja2Processor(context=context))
         loader.execute()
-        self.file_test(expect_file=expect, result_file=result_file)
 
     def default_context(self):
         """テスト用コンテキストのデフォルト値"""
@@ -217,9 +254,17 @@ class ExcelTest(J2SRenderingTest):
         ctx.template_encoding = 'utf8'
         ctx.input_encoding = 'utf8'
         ctx.output_encoding = 'utf8'
-        
+        ctx.split_suffix = None
         return ctx
 
+    class DumpProccesr(ExcelProsessor):
+        
+        def __init__(self, context):
+            super().__init__(context)
+            self.objects = []
+        
+        def execute_render(self, loaded):
+            self.objects.append(loaded)
 
 if __name__ == '__main__':
     unittest.main()

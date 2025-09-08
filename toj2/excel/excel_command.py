@@ -38,6 +38,7 @@ class ExcelCommand(Command):
         self.parser.add_argument(
             '-a', '--absolute', help='絶対位置指定でセル値を固定で取得する [セル位置=名前]の形式で列挙する. ex: A1=NAME1 A2=NAME2...', dest='absolute', nargs='*', default={}, action=KeyValuesParseAction)
         self.parser.add_argument('--col-prefix', default='col_')
+        self.parser.add_argument('--split-suffix', help='指定するとシート1枚ごとに1ファイルを生成します.引数として各ファイルに付与するサフィックスを指定します.', dest='split_suffix', nargs=1)
 
     def call_render(self, *, render, source, out):
         """
