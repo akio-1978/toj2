@@ -13,6 +13,9 @@ class Command():
         """このコンストラクタはテスト用で、何もしないコマンドを生成する"""
         self.setup()
 
+    def validate(self, context):
+        return
+
     def get_processor(self, context):
         return Jinja2Processor(context=context)
 
@@ -70,6 +73,8 @@ class Command():
         # コマンドのパース argsをサブコマンドひとつ分読み進めたいので、長さをチェックする
         context = self.parser.parse_args(args[1:] if len(args) > 0 else [], 
                                namespace=context)
+
+        self.validate(context)
 
         # renderインスタンスを生成
         render = self.get_loader(context=context)

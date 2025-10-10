@@ -9,8 +9,8 @@ class ExcelProsessor(Jinja2Processor):
     
     def execute(self, loaded_object):
 
-        if self.context.split_suffix is None:
-            # --split-suffix指定がない場合、一度で出力を終える
+        if self.context.split is None:
+            # --split指定がない場合、一度で出力を終える
             self.execute_render(loaded_object)
             return
 
@@ -37,6 +37,6 @@ class ExcelProsessor(Jinja2Processor):
         シート名にファイルに使えない文字が含まれる場合、_に置換される。
         """
         name_body = re.sub(r'[ \\/*?:"<>|]', '_', sheet['name'])
-        sheet_name = f"{str(idx).zfill(3)}_{name_body}{self.context.split_suffix}"
+        sheet_name = f"{str(idx).zfill(3)}_{name_body}{self.context.split}"
         return str(dir.joinpath(sheet_name))
 

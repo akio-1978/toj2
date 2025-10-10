@@ -206,15 +206,15 @@ class ExcelFileTest(J2SRenderingTest):
         context.read_range = parse_read_range(range_str='A1:C4')
         context.sheets = parse_sheet_args(sheets_range_str='1:3')
         context.absolute = {'abs':'E1'}
-        context.split_suffix = "_split.txt"
+        context.split = ".split.txt"
         self.excel_split_test(context=context,
-                                 expect=['tests/excel/expect/000_Sheet01_split.txt',
-                                         'tests/excel/expect/001_Sheet02_split.txt',
-                                         'tests/excel/expect/002_Sheet03_split.txt',] ,
+                                 expect=['tests/excel/expect/000_Sheet01.split.txt',
+                                         'tests/excel/expect/001_Sheet02.split.txt',
+                                         'tests/excel/expect/002_Sheet03.split.txt',] ,
                                  
-                                 output=['tests/output/excel/000_Sheet01_split.txt',
-                                         'tests/output/excel/001_Sheet02_split.txt',
-                                         'tests/output/excel/002_Sheet03_split.txt',] ,
+                                 output=['tests/output/excel/000_Sheet01.split.txt',
+                                         'tests/output/excel/001_Sheet02.split.txt',
+                                         'tests/output/excel/002_Sheet03.split.txt',] ,
                                  
                                  source='tests/excel/src/split.xlsx')
 
@@ -233,7 +233,7 @@ class ExcelFileTest(J2SRenderingTest):
         loader = ExcelLoader(context=context, processor=processor)
         loader.execute()
         # 1ファイルずつ比較テスト
-        for e, o in zip(e, o):
+        for e, o in zip(expect, output):
             self.file_test(expect_file=e, result_file=o, delete_on_success=False)
 
 

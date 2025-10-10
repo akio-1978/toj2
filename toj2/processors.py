@@ -34,6 +34,6 @@ class Jinja2Processor(Processor):
         environment.filters['excel_time'] = excel_time
         
     def execute(self, loaded_object):
-        with get_stream(source=self.context.out ,encoding=self.context.output_encoding, mode='w') as dest:
+        with open(self.context.out ,mode='wb') as dest:
             loaded_object['params'] = self.context.parameters
-            dest.write(self.template.render(loaded_object))
+            dest.write(self.template.render(loaded_object).encode(self.context.output_encoding))

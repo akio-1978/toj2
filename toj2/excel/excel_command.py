@@ -1,7 +1,9 @@
 import argparse
+from pathlib import Path
 import toj2
 from ..command import Command, KeyValuesParseAction
 from .excel_loader import ExcelLoader
+from .excel_processor import ExcelProsessor
 from ..utils import get_stream
 from .excelutils import parse_read_range, parse_sheet_args
 
@@ -19,6 +21,9 @@ class ExcelCommand(Command):
     def get_loader(self, context):
         """Commandが使うRenderのクラスを返す"""
         return ExcelLoader(context=context, processor=self.get_processor(context=context))
+
+    def get_processor(self, context):
+        return ExcelProsessor(context=context)
 
     def add_positional_arguments(self):
         """excel固有の必須引数があるので、位置引数を定義しなおす
@@ -38,7 +43,7 @@ class ExcelCommand(Command):
         self.parser.add_argument(
             '-a', '--absolute', help='絶対位置指定でセル値を固定で取得する [セル位置=名前]の形式で列挙する. ex: A1=NAME1 A2=NAME2...', dest='absolute', nargs='*', default={}, action=KeyValuesParseAction)
         self.parser.add_argument('--col-prefix', default='col_')
-        self.parser.add_argument('--split-suffix', help='指定するとシート1枚ごとに1ファイルを生成します.引数として各ファイルに付与するサフィックスを指定します.', dest='split_suffix', nargs=1)
+        self.parser.add_argument('--split', help='ソートの1枚ごとに1ファイルを生成します.このモードを指定するためには出力先をディレクトリに指定する必要があります。', nargs=1, dest='split')
 
     def call_render(self, *, render, source, out):
         """
@@ -48,6 +53,12 @@ class ExcelCommand(Command):
                            encoding=render.context.output_encoding, 
                            mode='w' ) as dest:
             render.render(source=source, output=dest)
+
+    def validate(self, context):
+        """parse_argsでは検出できないエラーの捕捉"""
+        path = Path(context.out)
+        if context.split and not path.is_dir():
+            raise ValueError('--split指定時は出力先はディレクトリを指定してください')
 
 class CellRangeAction(argparse.Action):
     """ 読み取るセル範囲を表す座標情報をセットする

@@ -88,7 +88,16 @@ class RunnerTest(J2SRenderingTest):
         result_file = self.result_file()
         with self.assertRaises(BaseException):
             Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
-                result_file, '1:', 'C7:H10', '--split-suffix', '--absolute', 'NAME=C3', 'DESCRIPTION=C4']).execute()
+                result_file, '1:', 'C7:H10', '--split', '--absolute', 'NAME=C3', 'DESCRIPTION=C4']).execute()
+
+    def test_split_omit_suffix(self):
+        """Excel変換起動（引数が複雑）"""
+
+        with self.assertRaises(ValueError):
+            Runner(args=['excel', 'tests/excel/templates/simple.tmpl', 'tests/excel/src/simple.xlsx',
+                'tests/excel/templates/simple.tmpl', '1', 'A2:A5', '--split', 'outtodir']).execute()
+            self.file_test(expect_file='tests/excel/expect/000_Sheet1', result_file='tests/output/excel/000_Sheet1')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,7 +14,7 @@ class ExcelLogicTest(unittest.TestCase):
         """1シートを--sprit-suffix指定で出力する"""
         loaded = {'sheets' :[{'name': 'sheet_1'}]}
         context = AppContext()
-        context.split_suffix = '.file'
+        context.split = '.file'
         context.out = 'file/output'
         processor = ExcelProcessorForTest(context)
         processor.execute(loaded)
@@ -27,7 +27,7 @@ class ExcelLogicTest(unittest.TestCase):
         """3シートを--sprit-suffix指定で出力する"""
         loaded = {'sheets' :[{'name': 'sheet_1'}, {'name': 'sheet_2'}, {'name': 'sheet_3'}]}
         context = AppContext()
-        context.split_suffix = '.file'
+        context.split = '.file'
         context.out = 'file/output'
         processor = ExcelProcessorForTest(context)
         processor.execute(loaded)
@@ -47,7 +47,7 @@ class ExcelLogicTest(unittest.TestCase):
         """
         loaded = {'sheets' :[{'name': 'escaped \\/*?:"<>|sheet'}]}
         context = AppContext()
-        context.split_suffix = '.file'
+        context.split = '.file'
         context.out = 'file/output'
         processor = ExcelProcessorForTest(context)
         processor.execute(loaded)
