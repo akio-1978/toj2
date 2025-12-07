@@ -1,6 +1,8 @@
 # toj2 release note
 
 ## version 0.2.x
+## version 0.2.4
+excelに`--split`オプションを追加。
 
 ## version 0.2.3 
 2025/04/27リリース
