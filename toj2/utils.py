@@ -1,14 +1,16 @@
+import sys
 import io
 import contextlib
 
 def get_stream(*, source:str | io.TextIOWrapper, encoding:str='utf8', mode:str='r'):
     """入出力ラッパー
-        with文で使う前提
-        ファイル名を受け取ったらopenし、TextIOWrapperならencodingを変更して再構築する。
-        openしたファイルはcloseし、TextIOWrapperならcloseしない。
+        ファイル名が'-'ならstdin/outを使う
     """
-    if not isinstance(source, io.TextIOWrapper):
-        return contextlib.closing(open(source, encoding=encoding, mode=mode))
-    else:
+    if source == '-':
+        # stdio/outを割り当てる
+        std =  sys.stdin if mode[1] == 'r' else sys.stdout
         return contextlib.nullcontext(io.TextIOWrapper(source.buffer, encoding=encoding))
+    else:
+        # 通常ファイル
+        return contextlib.closing(open(source, encoding=encoding, mode=mode))
     
