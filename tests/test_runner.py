@@ -98,6 +98,25 @@ class RunnerTest(J2SRenderingTest):
                 'tests/excel/templates/simple.tmpl', '1', 'A2:A5', '--split', 'outtodir']).execute()
             self.file_test(expect_file='tests/excel/expect/000_Sheet1', result_file='tests/output/excel/000_Sheet1')
 
+    def test_stdio(self):
+        """stdio入出力"""
+        expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
+        result_file = self.result_file()
+        with self.redirect_stdin(open('tests/csv/src/simple.csv')):
+            with contextlib.redirect_stdout(open(result_file, mode='w')):
+                Runner(args=['csv', 'tests/csv/templates/simple.tmpl', 'tests/csv/src/simple.csv', 
+                    result_file, '-H']).execute()
+        self.file_test(expect_file=expect_file, result_file=result_file)
+
+    @contextlib.contextmanager
+    def redirect_stdin(self, new_stdin):
+        old = sys.stdin
+        sys.stdin = new_stdin
+        try:
+            yield
+        finally:
+            sys.stdin = old
+
 
 if __name__ == '__main__':
     unittest.main()
