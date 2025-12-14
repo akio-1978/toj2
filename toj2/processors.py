@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from .context import AppContext
 from .jinja2_custom_filter import sequential_group_by
 from .excel.excel_custom_filter import excel_time
-
+from .utils import get_stream
 class Processor:
     def __init__(self, context:AppContext) -> None:
         self.context = context
@@ -46,7 +46,9 @@ class Jinja2Processor(Processor):
         environment.filters['excel_time'] = excel_time
 
     def _execute(self, load_object:dict):
-        with open(self.context.out ,mode='wb') as dest:
+        with get_stream(source = self.context.out ,mode = 'w', 
+                            encoding = self.context.output_encoding,
+                        ) as dest:
             load_object['params'] = self.context.parameters
-            dest.write(self.template.render(load_object).encode(self.context.output_encoding))
+            dest.write(self.template.render(load_object))
 

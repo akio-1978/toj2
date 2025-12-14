@@ -8,8 +8,12 @@ def get_stream(*, source:str | io.TextIOWrapper, encoding:str='utf8', mode:str='
     """
     if source == '-':
         # stdio/outを割り当てる
-        std =  sys.stdin if mode[1] == 'r' else sys.stdout
-        return contextlib.nullcontext(io.TextIOWrapper(source.buffer, encoding=encoding))
+        if mode[0] == 'w':
+            
+            sys.stdout.reconfigure(encoding=encoding)
+            return contextlib.nullcontext(sys.stdout)
+        else:
+            return contextlib.nullcontext(sys.stdin)
     else:
         # 通常ファイル
         return contextlib.closing(open(source, encoding=encoding, mode=mode))
