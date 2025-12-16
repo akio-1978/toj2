@@ -1,4 +1,8 @@
-# toj2 release note
+# toj2 リリースノート
+
+## version 0.3.x
+## version 0.3.0
+* `stdin`からの入力と`stdout`への出力に再度対応、引数に`-`を指定する形に変更した。
 
 ## version 0.2.x
 ## version 0.2.4
