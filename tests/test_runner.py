@@ -104,8 +104,8 @@ class RunnerTest(J2SRenderingTest):
         result_file = self.result_file()
         with self.redirect_stdin(open('tests/csv/src/simple.csv')):
             with contextlib.redirect_stdout(open(result_file, mode='w')):
-                Runner(args=['csv', 'tests/csv/templates/simple.tmpl', 'tests/csv/src/simple.csv', 
-                    result_file, '-H']).execute()
+                Runner(args=['csv', 'tests/csv/templates/simple.tmpl', '-', 
+                    '-', '-H']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     @contextlib.contextmanager
