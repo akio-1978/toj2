@@ -8,6 +8,7 @@ authors = ["akio-1978 <akio.ogawa01@gmail.com>"]
 python = "^3.8"
 Jinja2 = "^3.0.3"
 openpyxl = "^3.0.7"
+pyyaml = "^6.0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
