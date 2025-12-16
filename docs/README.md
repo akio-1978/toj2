@@ -8,7 +8,7 @@ csvやexcelをjinja2テンプレートで処理できるツールです。
 ### csvファイルを変換方法
 [toj2によるCSVファイル変換](./csv/csv-tutorial.md)
 
-### excelファイルを変換方法
+### excelファイルの変換方法
 [toj2によるExcelファイル変換](./excel/excel-tutorial.md)
 
 ### jsonファイルを変換する例
