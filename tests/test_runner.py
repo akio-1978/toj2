@@ -84,14 +84,14 @@ class RunnerTest(J2SRenderingTest):
         self.file_test(expect_file=expect_file, result_file=result_file)
 
     def test_split_sheets_loss_suffix(self):
-        """--split_sheetsの引数不正"""
+        """--splitの引数不正（suffix未指定）"""
         result_file = self.result_file()
         with self.assertRaises(BaseException):
             Runner(args=['excel', 'tests/excel/templates/read_document.tmpl', 'tests/excel/src/read_document.xlsx',
                 result_file, '1:', 'C7:H10', '--split', '--absolute', 'NAME=C3', 'DESCRIPTION=C4']).execute()
 
     def test_split_omit_suffix(self):
-        """Excel変換起動（引数が複雑）"""
+        """--split（--splitにディレクトリを指定しない）"""
 
         with self.assertRaises(ValueError):
             Runner(args=['excel', 'tests/excel/templates/simple.tmpl', 'tests/excel/src/simple.xlsx',
@@ -107,6 +107,15 @@ class RunnerTest(J2SRenderingTest):
                 Runner(args=['csv', 'tests/csv/templates/simple.tmpl', '-', 
                     '-', '-H']).execute()
         self.file_test(expect_file=expect_file, result_file=result_file)
+
+    def test_excel_stdio_error(self):
+        """excelの入力にstdinは使えない"""
+
+        with self.assertRaises(ValueError):
+            Runner(args=['excel', 'tests/excel/templates/simple.tmpl', '-',
+                'tests/excel/templates/simple.tmpl', '1', 'A2:A5', '--split', 'outtodir']).execute()
+            self.file_test(expect_file='tests/excel/expect/000_Sheet1', result_file='tests/output/excel/000_Sheet1')
+
 
     @contextlib.contextmanager
     def redirect_stdin(self, new_stdin):

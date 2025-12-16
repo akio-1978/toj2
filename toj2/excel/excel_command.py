@@ -59,6 +59,9 @@ class ExcelCommand(Command):
         path = Path(context.out)
         if context.split and not path.is_dir():
             raise ValueError('--split指定時は出力先はディレクトリを指定してください')
+        
+        if context.source == '-':
+            raise ValueError('Excelブックは標準出力から読み込めません')
 
 class CellRangeAction(argparse.Action):
     """ 読み取るセル範囲を表す座標情報をセットする
