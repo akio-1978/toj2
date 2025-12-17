@@ -1,0 +1,16 @@
+table:
+    table_name : item_shop
+    columns:
+        - column:
+          name : id
+          type : id
+          primary_key: true
+        - column:
+          name : item_name
+          type : varchar(255)
+        - column:
+          name : price
+          type : integer
+        - column:
+          name : comment
+          type : varchar(255)

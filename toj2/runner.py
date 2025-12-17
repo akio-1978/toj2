@@ -5,6 +5,7 @@ import toj2
 from .csv.csv_command import CsvCommand
 from .excel.excel_command import ExcelCommand
 from .json.json_command import JsonCommand
+from .yaml.yaml_command import YamlCommand
 from .context import AppContext
 
 
@@ -17,6 +18,7 @@ class Runner():
             'csv' : CsvCommand,
             'excel' : ExcelCommand,
             'json' : JsonCommand,
+            'yaml' : YamlCommand
         }
 
     def execute(self):
