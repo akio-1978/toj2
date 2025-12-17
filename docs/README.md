@@ -11,8 +11,8 @@ csvやexcelをjinja2テンプレートで処理できるツールです。
 ### excelファイルの変換方法
 [toj2によるExcelファイル変換](./excel/excel-tutorial.md)
 
-### jsonファイルを変換する例
-[jsonについてはごくシンプルな動作のみ](JSONファイルの変換)なので、このファイル内で解説します。
+### json/yamlファイルを変換する例
+[json/yamlについてはごくシンプルな動作のみ](JSONファイルの変換)なので、jsonのみこのファイル内で解説します。
 
 ## 動作条件
 #### pythonバージョン
@@ -22,8 +22,11 @@ PyPIには上げないので、このリポジトリから直接取得してく�
 ```sh
 pip install git+https://github.com/akio-1978/toj2
 ```
-#### 依存性
-jinja2とopenpyxlを使用しています。
+#### 依存関係
+以下の外部モジュールを使用しています。
+- jinja2
+- openpyxl
+- pyyaml
 
 ## 実行方法
 コマンドとして実行します。例えば以下のような形になります。
@@ -38,7 +41,7 @@ toj2 csv demo.tmpl demo.csv test.out
 
 ### 位置引数
 記述位置で意味が決まる引数です。
-位置引数だけ指定してtoj2を実行すると以下のようなイメージになります。[^out-option]
+位置引数だけ指定してtoj2を実行すると以下のようなイメージになります。
 
 ```sh
 toj2 csv demo.tmpl demo.csv test.out
@@ -49,6 +52,7 @@ toj2 csv demo.tmpl demo.csv test.out
 - csv
 - excel
 - json
+- yaml
 
 値がexcelの場合は位置引数にも変化があるので、[excel変換仕様](./excel/excel-tutorial.md)を確認してください。
 
@@ -119,15 +123,17 @@ toj2 csv sample.tmpl sample.csv test.out --config-file config.json --skip-lines 
 
 `--parameters`オプションのうち、パラメータ`PARAM1`の値は`X`に変更され、新たに`PARAM4`が追加されますが**`PARAM2`と`PARAM3`は影響を受けません。**設定ファイル内で値またはリストで記述するものは置き換えられ、オブジェクトで記述されるものはマージされます。**常にコマンドラインからの設定が優先して採用されます。
 
-### JSONファイルの変換
-JSONの処理については特に固有のオプションはなく、共通オプションのみが使用できます。
+### JSON/YAMLファイルの変換
+JSON/YAMLの処理については特に固有のオプションはなく、共通オプションのみが使用できます。
 
 ```sh
 toj2 json jsontemplate.tmpl data.json test.out
+toj2 yaml yamltemplate.tmpl data.yaml test.out
 ```
 
 #### jinja2への出力形式
-toj2はjsonを以下の形式にしてjinja2に渡します。
+toj2はJSON/YAMLを以下の形式にしてjinja2に渡します。
+JSONは標準の`json.load`、YAMLはpyyamlの`yaml.safe_load`で読み込んだ内容を`data`に格納する以外何もしません。
 ```python
 {
     # 受け取ったjsonをjson.loadした結果
@@ -137,7 +143,5 @@ toj2はjsonを以下の形式にしてjinja2に渡します。
 }
 
 ```
-JSONに関しては、toj2は単純にjinja2へのデータの中継を行うだけです。
 
-[^out-option]: この例だと変換結果は`sys.stdout`に出力されます。ファイルに出力するためには別途`--out`オプションを指定してください。
 [^except-excel]: Excel変換はこの形式に合致しない例外が多いので、別途確認してください。
