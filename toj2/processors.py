@@ -18,13 +18,13 @@ class Processor:
     def _setup (self):
         pass
 
-    def execute(self, load_object:dict):
+    def execute(self, load_result:dict):
         if (self.output_func is None):
-            self._execute(load_object)
+            self._execute(load_result)
         else:
-            self.output_func(load_object, self.context)
+            self.output_func(load_result, self.context)
 
-    def _execute(self, load_object):
+    def _execute(self, load_result):
         pass
 
 
@@ -45,10 +45,10 @@ class Jinja2Processor(Processor):
         environment.filters['sequential_group_by'] = sequential_group_by
         environment.filters['excel_time'] = excel_time
 
-    def _execute(self, load_object:dict):
+    def _execute(self, load_result:dict):
         with get_stream(source = self.context.out ,mode = 'w', 
                             encoding = self.context.output_encoding,
                         ) as dest:
-            load_object['params'] = self.context.parameters
-            dest.write(self.template.render(load_object))
+            load_result['params'] = self.context.parameters
+            dest.write(self.template.render(load_result))
 
