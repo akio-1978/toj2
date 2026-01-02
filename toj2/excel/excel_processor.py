@@ -26,9 +26,9 @@ class ExcelProsessor(Jinja2Processor):
         # contextのoutを戻す
         self.context.out = keep_path
         
-    def execute_render(self, loaded_object:dict):
+    def execute_render(self, load_result:dict):
         """テストで補足しやすいように内部メソッドでexecuteする"""
-        super().execute(loaded_object)
+        super().execute(load_result)
 
     def get_filename(self, idx:int, sheet:dict, dir:pathlib.Path):
         """1シート毎に出力を分ける場合にファイル名を生成する
