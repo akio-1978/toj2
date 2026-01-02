@@ -14,17 +14,13 @@ class ExcelProsessor(Jinja2Processor):
             self.execute_render(load_result)
             return
 
-        # contextの書き換えを行うが、outは再利用される可能性があるため、退避して後で戻す
-        keep_path = self.context.out
         dir = pathlib.Path(self.context.out)
         for idx, sheet in enumerate(load_result['sheets']):
-            # シート枚数分複数回出力する
-            # 出力回数が分かれていても毎回すべてのシートが参照可能になっている
+            # シート枚数分複数回出力する、参照自体は毎回すべてのシートが参照可能
             load_result['current'] = {'idx': idx, 'sheet': sheet}
+            # context.outは不可逆に変更される
             self.context.out = self.get_filename(idx, sheet, dir)
             self.execute_render(load_result)
-        # contextのoutを戻す
-        self.context.out = keep_path
         
     def execute_render(self, load_result:dict):
         """テストで補足しやすいように内部メソッドでexecuteする"""
