@@ -2,7 +2,7 @@ import argparse
 
 from .loader import Loader
 from .context import AppContext
-from .processors import Jinja2Processor
+from .processors import Processor, Jinja2Processor
 
 # CommandRunnerのデフォルト実装
 
@@ -13,17 +13,17 @@ class Command():
         """このコンストラクタはテスト用で、何もしないコマンドを生成する"""
         self.setup()
 
-    def validate(self, context):
+    def validate(self, context:AppContext) -> None:
         return
 
-    def get_processor(self, context):
+    def get_processor(self, context:AppContext) -> Processor:
         return Jinja2Processor(context=context)
 
-    def get_loader(self, *, context):
+    def get_loader(self, *, context:AppContext) -> Loader:
         """Commandが使うLoaderのクラスを返す"""
         return Loader(context=context, processor=self.get_processor(context=context))
 
-    def setup(self):
+    def setup(self) -> None:
         """ コマンドの引数を定義する
             引数定義は3つのメソッドに分かれており、それぞれ個別にオーバーライドできる
         """
@@ -31,7 +31,7 @@ class Command():
         self.add_positional_arguments()
         self.add_optional_arguments()
 
-    def add_positional_arguments(self):
+    def add_positional_arguments(self) -> None:
         """ 位置引数をパーサに追加する
             位置引数を書き直したい場合にオーバーライドする
             引数templateとsourceは必須のため、サブコマンドではsuper呼出しするのが好ましい
@@ -41,11 +41,11 @@ class Command():
         self.parser.add_argument('source', help='レンダリング対象ファイル',)
         self.parser.add_argument('out', help='出力先ファイル',)
 
-    def add_optional_arguments(self):
+    def add_optional_arguments(self) -> None:
         """サブコマンドでオプションを追加する場合にこのメソッドをオーバーライドする"""
         pass
 
-    def add_default_options(self):
+    def add_default_options(self) -> None:
         """ オプション引数をパーサに追加する
             全てのサブコマンドで共通して使うオプションを想定しているので
             オーバーライドは不要
@@ -68,7 +68,7 @@ class Command():
         self.parser.add_argument('--config-file', metavar='file',
                             help='names parameters absoluteの各設定をjsonに記述したファイル')
 
-    def execute(self, *, args:list, context:AppContext):
+    def execute(self, *, args:list, context:AppContext) -> None:
         """ レンダリング実行 """
         # コマンドのパース argsをサブコマンドひとつ分読み進めたいので、長さをチェックする
         context = self.parser.parse_args(args[1:] if len(args) > 0 else [], 
