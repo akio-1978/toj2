@@ -56,7 +56,6 @@ class Jinja2Processor(Processor):
 class DumpProcessor(Processor):
     def __init__(self, context:AppContext) -> None:
         super().__init__(context)
-        print('dump')
     
     def _execute(self, load_result:dict) -> None:
         with get_stream(source = self.context.out ,mode = 'w', 
