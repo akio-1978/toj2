@@ -1,4 +1,5 @@
 import pathlib
+import json
 from jinja2 import Environment, FileSystemLoader
 from .context import AppContext
 from .jinja2_custom_filter import sequential_group_by
@@ -51,4 +52,16 @@ class Jinja2Processor(Processor):
                         ) as dest:
             load_result['params'] = self.context.parameters
             dest.write(self.template.render(load_result))
+
+class DumpProcessor(Processor):
+    def __init__(self, context:AppContext) -> None:
+        super().__init__(context)
+        print('dump')
+    
+    def _execute(self, load_result:dict) -> None:
+        with get_stream(source = self.context.out ,mode = 'w', 
+                            encoding = self.context.output_encoding,
+                        ) as dest:
+            load_result['params'] = self.context.parameters
+            json.dump(load_result, dest)
 

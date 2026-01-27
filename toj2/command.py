@@ -2,7 +2,7 @@ import argparse
 
 from .loader import Loader
 from .context import AppContext
-from .processors import Processor, Jinja2Processor
+from .processors import Processor, Jinja2Processor, DumpProcessor
 
 # CommandRunnerのデフォルト実装
 
@@ -16,7 +16,9 @@ class Command():
     def validate(self, context:AppContext) -> None:
         return
 
-    def get_processor(self, context:AppContext) -> Processor:
+    def get_processor(self, *, context:AppContext) -> Processor:
+        if context.dump:
+            return DumpProcessor(context=context)
         return Jinja2Processor(context=context)
 
     def get_loader(self, *, context:AppContext) -> Loader:
@@ -67,6 +69,10 @@ class Command():
 
         self.parser.add_argument('--config-file', metavar='file',
                             help='names parameters absoluteの各設定をjsonに記述したファイル')
+        
+        self.parser.add_argument('--dump', metavar='', default=False,
+                            help='jinja2を介さずに読み取り結果をjsonで出力します', dest='dump_only', action='store_true')
+        
 
     def execute(self, *, args:list, context:AppContext) -> None:
         """ レンダリング実行 """

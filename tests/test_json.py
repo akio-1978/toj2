@@ -1,7 +1,7 @@
 import unittest
 from toj2.context import AppContext
 from toj2.json.json_loader import JsonLoader
-from toj2.processors import Jinja2Processor
+from toj2.processors import Jinja2Processor, DumpProcessor
 from tests.testutils import J2SRenderingTest
 
 
@@ -21,9 +21,20 @@ class JsonTest(J2SRenderingTest):
                                expect='tests/json/expect/simple_json.sql',
                                )
 
-    def file_convert_test(self, *, context, expect):
+    def test_json_dump(self):
+        ctx = self.default_context()
+        ctx.template='tests/json/templates/simple_json.tmpl'
+        ctx.source = 'tests/json/src/simple_json.json'
+        ctx.dump = True
+        
+        self.file_convert_test(context=ctx,
+                               expect='tests/json/expect/test_json_dump.json',
+                               processor=DumpProcessor
+                               )
+
+    def file_convert_test(self, *, context, expect, processor=Jinja2Processor):
         context.out = self.result_file()
-        loader = JsonLoader(context=context, processor=Jinja2Processor(context))
+        loader = JsonLoader(context=context, processor=processor(context))
 
         self.processor_test(loader=loader, expect_file=expect)
 

@@ -2,7 +2,7 @@ import sys
 import argparse
 import json
 import toj2
-from command import Command
+from .command import Command
 from .csv.csv_command import CsvCommand
 from .excel.excel_command import ExcelCommand
 from .json.json_command import JsonCommand
