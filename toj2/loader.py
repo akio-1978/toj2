@@ -1,4 +1,3 @@
-from .jinja2_custom_filter import sequential_group_by
 from .processors import Processor
 from .context import AppContext
 

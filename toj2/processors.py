@@ -2,7 +2,7 @@ import pathlib
 import json
 from jinja2 import Environment, FileSystemLoader
 from .context import AppContext
-from .jinja2_custom_filter import sequential_group_by
+from .jinja2_custom_filter import stable_group_by
 from .excel.excel_custom_filter import excel_time
 from .utils import get_stream
 class Processor:
@@ -43,7 +43,7 @@ class Jinja2Processor(Processor):
 
     def _install_filters(self, environment: Environment) -> None:
         """追加のフィルタを設定する"""
-        environment.filters['sequential_group_by'] = sequential_group_by
+        environment.filters['stable_group_by'] = stable_group_by
         environment.filters['excel_time'] = excel_time
 
     def _execute(self, load_result:dict) -> None:
