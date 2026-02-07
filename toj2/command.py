@@ -70,8 +70,8 @@ class Command():
         self.parser.add_argument('--config-file', metavar='file',
                             help='names parameters absoluteの各設定をjsonに記述したファイル')
         
-        self.parser.add_argument('--dump', metavar='', default=False,
-                            help='jinja2を介さずに読み取り結果をjsonで出力します', dest='dump_only', action='store_true')
+        self.parser.add_argument('--dump', default=None,
+                            help='jinja2を介さずに読み取り結果をjsonで出力します', dest='dump', action='store_true')
         
 
     def execute(self, *, args:list, context:AppContext) -> None:
