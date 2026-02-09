@@ -65,7 +65,7 @@ class Command():
                             help='テンプレート内で参照可能な追加のパラメータ [KEY=VALUE] 形式で列挙.', action=KeyValuesParseAction)
 
         self.parser.add_argument('-n', '--names', nargs='*',
-                            help='テンプレート内で各行のカラムに付ける名前を左側から列挙 defaultは col_00 col02...', default=[])
+                            help='テンプレート内で各行のカラムに付ける名前を左側から列挙 defaultは col_00 col01...', default=[])
 
         self.parser.add_argument('--config-file', metavar='file',
                             help='names parameters absoluteの各設定をjsonに記述したファイル')
