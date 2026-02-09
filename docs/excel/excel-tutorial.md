@@ -334,6 +334,17 @@ toj2 excel excel.tmpl book.xlsx test.out 1 A3:D6 --absolute value1=A1 value2=A2
 
 **currentが追加されるだけで、常に全てのデータを参照できます。**
 
+## カスタムフィルター
+toj2はexcel処理のために以下のjinja2カスタムフィルターを提供します。
+
+#### excel_time
+excelの日付値を任意のフォーマットに変換します。
+##### 引数
+- 日付値（datetimeまたはint）
+- フォーマット（strftime方式）
+#### 動作
+引数がdatetimeまたはintであればstrftimeの形式で返し、どちらでもなければそのままの値を返します。
+int型の処理はopenpyxlの`utils.datetime.from_excel`に依存しています。
 
 [トップへ](../README.md)
 
