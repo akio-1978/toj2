@@ -1,9 +1,11 @@
 import itertools
+import datetime
 
-def stable_group_by(iterable, key):
+def stable_groupby(iterable, key):
     
     groups = []
     for group_key, group in itertools.groupby(iterable, lambda item: item.get(key, 'None')) :
         groups.append((group_key, list(group)))
 
     return groups
+
