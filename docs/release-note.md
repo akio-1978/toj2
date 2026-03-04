@@ -1,6 +1,9 @@
 # toj2 リリースノート
 
 ## version 0.3.x
+### 0.3.5
+* `csvcell`フィルターの追加
+
 ### 0.3.4
 * `stable_group_by`を`stable_groupby`に改名。
 * `zfilldate`フィルターの追加
