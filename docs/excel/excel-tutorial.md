@@ -346,9 +346,6 @@ excelの日付値を任意のフォーマットに変換します。
 引数がdatetimeまたはintであればstrftimeの形式で返し、どちらでもなければそのままの値を返します。
 int型の処理はopenpyxlの`utils.datetime.from_excel`に依存しています。
 
-#### stable_group_by
-CSVと同じ動作をします。
-
 [トップへ](../README.md)
 
 [^unused-zero]: ただし、今回`col_00`は使用していません。これはCSVチュートリアルとある程度の整合性を取るようにしているためなので。コマンドで`D3:F`としてすれば`col_00`が氏名として取得されます。

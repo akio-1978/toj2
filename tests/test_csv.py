@@ -136,6 +136,11 @@ class CsvTest(J2SRenderingTest):
                                source='tests/csv/src/empty.csv',
                                skip_lines=2)
 
+    def test_zfilldate(self):
+        """zfilldateフィルタによる日付変換"""
+        self.file_convert_test(template='tests/csv/templates/zfilldate.tmpl',
+                               expect='tests/csv/expect/zfilldate.txt',
+                               source='tests/csv/src/zfilldate.csv')
 
     def file_convert_test(self, *, template, expect, source,
                           parameters={}, skip_lines=0, read_header=True, headers=None, names=[]):
