@@ -1,5 +1,7 @@
 import itertools
 from datetime import datetime
+import csv
+import io
 
 def stable_groupby(iterable, key):
     
@@ -15,3 +17,9 @@ def zfilldate(value):
     """
     dt = datetime.strptime(value, "%Y/%m/%d")
     return dt.strftime("%Y/%m/%d")
+
+def csvcell(value):
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow([value])
+    return buf.getvalue().rstrip("\r\n")

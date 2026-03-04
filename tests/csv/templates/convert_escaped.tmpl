@@ -1,3 +1,3 @@
 {% for line in rows -%}
-{{line.col_00}}
+{{line.col_00}},{{line.col_01|csvcell}}
 {% endfor -%}

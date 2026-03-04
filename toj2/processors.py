@@ -2,7 +2,7 @@ import pathlib
 import json
 from jinja2 import Environment, FileSystemLoader
 from .context import AppContext
-from .jinja2_custom_filter import stable_groupby, zfilldate
+from .jinja2_custom_filter import stable_groupby, zfilldate, csvcell
 from .excel.excel_custom_filter import excel_time
 from .utils import get_stream
 class Processor:
@@ -46,6 +46,7 @@ class Jinja2Processor(Processor):
         environment.filters['stable_groupby'] = stable_groupby
         environment.filters['zfilldate'] = zfilldate
         environment.filters['excel_time'] = excel_time
+        environment.filters['csvcell'] = csvcell
 
     def _execute(self, load_result:dict) -> None:
         with get_stream(source = self.context.out ,mode = 'w', 
