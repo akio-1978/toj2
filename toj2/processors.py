@@ -2,7 +2,7 @@ import pathlib
 import json
 from jinja2 import Environment, FileSystemLoader
 from .context import AppContext
-from .jinja2_custom_filter import stable_groupby, zfilldate, csvcell
+from .jinja2_custom_filter import stable_groupby, datef, csvcell
 from .excel.excel_custom_filter import excel_time
 from .utils import get_stream
 class Processor:
@@ -44,7 +44,7 @@ class Jinja2Processor(Processor):
     def _install_filters(self, environment: Environment) -> None:
         """追加のフィルタを設定する"""
         environment.filters['stable_groupby'] = stable_groupby
-        environment.filters['zfilldate'] = zfilldate
+        environment.filters['datef'] = datef
         environment.filters['excel_time'] = excel_time
         environment.filters['csvcell'] = csvcell
 
