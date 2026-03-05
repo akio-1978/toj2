@@ -11,12 +11,16 @@ def stable_groupby(iterable, key):
 
     return groups
 
-def zfilldate(value):
-    """ 日付の月日のゼロ埋めを行う(ex 2025/1/9 -> 2025/01/09)
-        ※日本のオープンデータでよく見られる形式だったので追加した
+def datef(value, in_fmt="%Y/%m/%d", out_fmt="%Y/%m/%d"):
+    """ 
+        日付形式文字列の変換を行う。
+        引数がin_fmtに合致しない場合、変換されない元の値を返します。
     """
-    dt = datetime.strptime(value, "%Y/%m/%d")
-    return dt.strftime("%Y/%m/%d")
+    try:
+        d = datetime.strptime(value, in_fmt)
+        return d.strftime(out_fmt)
+    except Exception:
+        return value
 
 def csvcell(value):
     buf = io.StringIO()

@@ -1,0 +1,13 @@
+{
+    "persons" : [
+{%- for person in rows %}
+        {
+            "group" : "{{person.group}}",
+            "number" : "{{person.number}}",
+            "date" : "{{person.date | datef}}",
+            "date2" : "{{person.date2 | datef("%Y/%m/%d, %Y-%m-%d")}}",
+            "date3" : "{{person.date3 | datef("%Y/%m/%d %H:%M:%S", "%Y-%m-%d %H:%M:%S")}}"
+        }{% if not loop.last %},{% endif %}
+{%- endfor%}
+    ]
+}
