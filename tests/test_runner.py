@@ -98,6 +98,16 @@ class RunnerTest(J2SRenderingTest):
                 'tests/excel/templates/simple.tmpl', '1', 'A2:A5', '--split', 'outtodir']).execute()
             self.file_test(expect_file='tests/excel/expect/000_Sheet1', result_file='tests/output/excel/000_Sheet1')
 
+    def test_custom_processor(self):
+        """--processor（カスタムプロセッサ）"""
+
+        expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
+        result_file = self.result_file()
+        Runner(args=['csv', '-', 'tests/csv/src/simple.csv', 
+            result_file, '-H', '--processor', './tests/custom_processor/custom.py:CustomProcessor']).execute()
+        self.file_test(expect_file=expect_file, result_file=result_file)
+
+
     def test_stdio(self):
         """stdio入出力"""
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')

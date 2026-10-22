@@ -28,10 +28,11 @@ class Command():
     def get_custom_processor(self, *, context:AppContext):
         """動的Processor読込み"""
         src_file, class_name = context.processor.rsplit(':')
-        spec = spec_from_file_location(src_file)
+        spec = spec_from_file_location(class_name, src_file)
         module = module_from_spec(spec)
         spec.loader.exec_module(module)
-        processor = getattr(class_name)
+        
+        processor = getattr(module, class_name)
         if not issubclass (processor, Processor):
             raise TypeError(processor)
         # インスタンスで返す
