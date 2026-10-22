@@ -1,4 +1,5 @@
 import argparse
+from importlib.util import spec_from_file_location, module_from_spec
 
 from .loader import Loader
 from .context import AppContext
@@ -17,9 +18,24 @@ class Command():
         return
 
     def get_processor(self, *, context:AppContext) -> Processor:
+        """dumpとprocessorが両方指定されている場合、dumpを優先する"""
         if context.dump:
             return DumpProcessor(context=context)
+        if context.processor:
+            return self.get_custom_processor(context=context)
         return Jinja2Processor(context=context)
+
+    def get_custom_processor(self, *, context:AppContext):
+        """動的Processor読込み"""
+        src_file, class_name = context.processor.rsplit(':')
+        spec = spec_from_file_location(src_file)
+        module = module_from_spec(spec)
+        spec.loader.exec_module(module)
+        processor = getattr(class_name)
+        if not issubclass (processor, Processor):
+            raise TypeError(processor)
+        # インスタンスで返す
+        return processor(context=context)
 
     def get_loader(self, *, context:AppContext) -> Loader:
         """Commandが使うLoaderのクラスを返す"""
