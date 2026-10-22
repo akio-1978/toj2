@@ -88,6 +88,9 @@ class Command():
         
         self.parser.add_argument('--dump', default=None,
                             help='jinja2を介さずに読み取り結果をjsonで出力します', dest='dump', action='store_true')
+
+        self.parser.add_argument('--processor', default=None,
+                            help='jinja2を介さずに読み取り結果をpythonで出力します[ソースファイル名:クラス名]', dest='processor')
         
 
     def execute(self, *, args:list, context:AppContext) -> None:
