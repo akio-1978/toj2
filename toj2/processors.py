@@ -9,21 +9,12 @@ class Processor:
     def __init__(self, context:AppContext) -> None:
         self.context = context
         self._setup()
-        self.output_func = None
-
-    # 読み取り結果を渡すオブジェクトを指定する
-    # メソッドの引数は(load_object:dict, context:AppContext)であること
-    def set_output_func(self, output_func: callable) -> None:
-        self.output_func = output_func
 
     def _setup (self):
         pass
 
     def execute(self, load_result:dict) -> None:
-        if (self.output_func is None):
-            self._execute(load_result)
-        else:
-            self.output_func(load_result, self.context)
+        self._execute(load_result)
 
     def _execute(self, load_result) -> None:
         pass
