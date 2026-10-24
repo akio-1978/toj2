@@ -1,0 +1,4 @@
+name/number/group
+suzuki/1001/A
+John/2001/B
+Paul/2002/B

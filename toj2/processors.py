@@ -14,14 +14,16 @@ class Processor:
         pass
 
     def execute(self, load_result:dict) -> None:
-        with get_stream(source = self.context.out ,mode = 'w', 
-                            encoding = self.context.output_encoding,
-                        ) as dest:
-            load_result['params'] = self.context.parameters
-            self._execute(load_result, dest)
+        load_result['params'] = self.context.parameters
+        self._execute(load_result)
 
-    def _execute(self, load_result, dest) -> None:
-        pass
+    def out_stream(self):
+        return get_stream(source = self.context.out ,mode = 'w', 
+                            encoding = self.context.output_encoding,
+                        )
+
+    def _execute(self, load_result) -> None:
+            pass
 
 
 class Jinja2Processor(Processor):
@@ -43,14 +45,16 @@ class Jinja2Processor(Processor):
         environment.filters['excel_time'] = excel_time
         environment.filters['csvcell'] = csvcell
 
-    def _execute(self, load_result:dict, dest) -> None:
-        dest.write(self.template.render(load_result))
+    def _execute(self, load_result:dict) -> None:
+        with self.out_stream() as dest:
+            dest.write(self.template.render(load_result))
 
 class DumpProcessor(Processor):
     def __init__(self, context:AppContext) -> None:
         super().__init__(context)
     
-    def _execute(self, load_result:dict, dest) -> None:
-        load_result['params'] = self.context.parameters
-        json.dump(load_result, dest)
+    def _execute(self, load_result:dict) -> None:
+         with self.out_stream() as dest:
+            dest.write(self.template.render(load_result))
+            json.dump(load_result, dest)
 

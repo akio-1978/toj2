@@ -23,6 +23,8 @@ class ExcelCommand(Command):
         return ExcelLoader(context=context, processor=self.get_processor(context=context))
 
     def get_processor(self, context):
+        if context.processor:
+            return self.get_custom_processor(context=context)
         return ExcelProsessor(context=context)
 
     def add_positional_arguments(self):

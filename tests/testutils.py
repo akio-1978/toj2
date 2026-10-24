@@ -43,6 +43,7 @@ class J2SRenderingTest(unittest.TestCase):
     # Runnerからコマンドライン引数を与えてテストするクラスのためのパス生成
     CSV = 'csv'
     EXCEL = 'excel'
+    CUSTOM = 'custom_processor'
     def expect_path(self, type, file):
         """比較元ファイル"""
         return f'tests/{type}/expect/{file}'
