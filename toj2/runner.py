@@ -37,7 +37,7 @@ class Runner():
         """引数を一部だけパースしてcontextとcommandを取得する"""
         # サブコマンドと設定ファイルだけを取得する、サブコマンドが対象外の場合ここで終了する
         ctx_parser = CustomHelpParser(prog=toj2.PROG_NAME, add_help=False)
-        ctx_parser.add_argument('cmd', choices=['csv', 'excel', 'json'], default='')
+        ctx_parser.add_argument('cmd', choices=['csv', 'excel', 'json', 'yaml'], default='')
         ctx_parser.add_argument('--config-file', default=None)
         parsed, unknown = ctx_parser.parse_known_args(args)
 
