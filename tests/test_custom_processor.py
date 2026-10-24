@@ -32,29 +32,20 @@ class CustomProcessorRunnerTest(J2SRenderingTest):
     def test_custom_processor_json(self):
         """--processor（カスタムプロセッサ） Json"""
 
-        expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
-        result_file = self.result_file()
-        Runner(args=['csv', '-', 'tests/csv/src/simple.csv', 
-            result_file, '-H', '--processor', './tests/custom_processor/custom.py:CustomProcessor']).execute()
-        self.file_test(expect_file=expect_file, result_file=result_file)
+        Runner(args=['json', '-', 'tests/json/src/simple_json.json', 
+            '-', '--processor', './tests/custom_processor/custom.py:JsonProcessor']).execute()
 
     def test_custom_processor_yaml(self):
         """--processor（カスタムプロセッサ） YAML"""
 
-        expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
-        result_file = self.result_file()
-        Runner(args=['csv', '-', 'tests/csv/src/simple.csv', 
-            result_file, '-H', '--processor', './tests/custom_processor/custom.py:CustomProcessor']).execute()
-        self.file_test(expect_file=expect_file, result_file=result_file)
+        Runner(args=['yaml', '-', 'tests/yaml/src/simple_yaml.yaml', 
+            '-', '--processor', './tests/custom_processor/custom.py:JsonProcessor']).execute()
 
-    def test_custom_processor_yaml(self):
+    def test_custom_processor_error(self):
         """--processor（カスタムプロセッサ） TypeError"""
-
-        expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
-        result_file = self.result_file()
-        Runner(args=['csv', '-', 'tests/csv/src/simple.csv', 
-            result_file, '-H', '--processor', './tests/custom_processor/custom.py:CustomProcessor']).execute()
-        self.file_test(expect_file=expect_file, result_file=result_file)
+        with self.assertRaises(TypeError):
+            Runner(args=['yaml', '-', 'tests/yaml/src/simple_yaml.yaml', 
+                '-', '--processor', './tests/custom_processor/custom.py:DummyProcessor']).execute()
 
 
 
