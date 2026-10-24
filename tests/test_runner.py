@@ -98,6 +98,23 @@ class RunnerTest(J2SRenderingTest):
                 'tests/excel/templates/simple.tmpl', '1', 'A2:A5', '--split', 'outtodir']).execute()
             self.file_test(expect_file='tests/excel/expect/000_Sheet1', result_file='tests/output/excel/000_Sheet1')
 
+    def test_dump(self):
+        """dumpプロセッサ"""
+        expect_file = self.expect_path(J2SRenderingTest.JSON, 'test_json_dump.json')
+        result_file = self.result_file()
+        Runner(args=['json', '-', 'tests/json/src/simple_json.json', 
+            result_file, '--dump']).execute()
+        self.file_test(expect_file=expect_file, result_file=result_file)
+
+    def test_dump_vs_custom(self):
+        """dumpとprocesseorが両方指定されている場合、dumpが優先される"""
+        expect_file = self.expect_path(J2SRenderingTest.JSON, 'test_json_dump.json')
+        result_file = self.result_file()
+        Runner(args=['json', '-', 'tests/json/src/simple_json.json', 
+            result_file, '--dump', '--processor', './tests/custom_processor/custom.py:DummyProcessor']).execute()
+        self.file_test(expect_file=expect_file, result_file=result_file)
+
+
     def test_stdio(self):
         """stdio入出力"""
         expect_file = self.expect_path(J2SRenderingTest.CSV, 'simple.txt')
