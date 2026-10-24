@@ -55,6 +55,6 @@ class DumpProcessor(Processor):
     
     def _execute(self, load_result:dict) -> None:
          with self.out_stream() as dest:
-            dest.write(self.template.render(load_result))
+            load_result['params'] = self.context.parameters
             json.dump(load_result, dest)
 
